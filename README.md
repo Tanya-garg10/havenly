@@ -1,70 +1,132 @@
-# Havenly 🏠
+<div align="center">
 
-Havenly is a modern, high-fidelity rental marketplace platform inspired by premium experiences like Airbnb. It offers a seamless property discovery experience with a focus on rich aesthetics, smooth animations, and a responsive user interface.
+```
+██╗  ██╗ █████╗ ██╗   ██╗███████╗███╗   ██╗██╗  ██╗   ██╗
+██║  ██║██╔══██╗██║   ██║██╔════╝████╗  ██║██║  ╚██╗ ██╔╝
+███████║███████║██║   ██║█████╗  ██╔██╗ ██║██║   ╚████╔╝
+██╔══██║██╔══██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║██║    ╚██╔╝
+██║  ██║██║  ██║ ╚████╔╝ ███████╗██║ ╚████║███████╗██║
+╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝
+```
 
-## 🚀 Features
+### Pixel-Perfect Rental Marketplace for Modern Explorers
 
-- **Premium UI/UX**: Clean, modern design using a curated color palette and typography.
-- **Dynamic Property Grids**: Responsive layouts that look great on any device.
-- **Advanced Filtering**: (In Progress) Filter properties by category, price, and location.
-- **Rich Media**: High-quality imagery and smooth horizontal-scrolling carousels.
-- **JAMstack Architecture**: Built with Next.js, TypeScript, and Tailwind CSS.
+[![Live](https://img.shields.io/badge/Live%20Preview-Visit%20Site-00e5ff?style=for-the-badge&logo=vercel&logoColor=black)](https://havenly.vercel.app/)
+[![Issues](https://img.shields.io/badge/Open%20Issues-Contribute-ff66c4?style=for-the-badge&logo=github&logoColor=black)](https://github.com/akshay0611/havenly/issues)
+[![Contributing](https://img.shields.io/badge/Guide-CONTRIBUTING.md-7dff6b?style=for-the-badge&logo=bookstack&logoColor=black)](./CONTRIBUTING.md)
 
-## 🛠️ Tech Stack
+</div>
 
-- **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Components**: [Radix UI primitives](https://www.radix-ui.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Deployment**: [Vercel](https://vercel.com/)
+<div align="center">
 
-## 🏁 Getting Started
+![Next.js](https://img.shields.io/badge/Next.js_16-0b0f1a?style=flat-square&logo=nextdotjs&logoColor=6cf2ff)
+![TypeScript](https://img.shields.io/badge/TypeScript-0b0f1a?style=flat-square&logo=typescript&logoColor=6cf2ff)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-0b0f1a?style=flat-square&logo=tailwindcss&logoColor=6cf2ff)
+![Radix UI](https://img.shields.io/badge/Radix_UI-0b0f1a?style=flat-square&logo=radixui&logoColor=ff7cd8)
+![React 19](https://img.shields.io/badge/React_19-0b0f1a?style=flat-square&logo=react&logoColor=7dff6b)
+![ELUSOC](https://img.shields.io/badge/ELUSOC_2026-0b0f1a?style=flat-square&logo=gamejolt&logoColor=ffd166)
 
-To get the project running locally, follow these steps:
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/akshay0611/havenly.git
-   ```
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
-3. **Run the development server**:
-   ```bash
-   pnpm dev
-   ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-For a more detailed guide, see [SETUP.md](file:///Users/aksh/Downloads/rental_marketplace/SETUP.md).
-
-## 🗺️ Roadmap
-
-- [ ] **Data Persistence**: Live database and user authentication.
-- [ ] **Map View**: Location-based search using Google Maps or Mapbox.
-- [ ] **Host Dashboard**: Property management for home owners.
-- [ ] **Booking Flow**: Complete reservation system with payment processing.
-
-## 🤝 Contributing
-
-We welcome contributions from everyone! Whether you're a seasoned developer or just starting out, there are many ways to help improve Havenly.
-
-Please see our [CONTRIBUTING.md](file:///Users/aksh/Downloads/rental_marketplace/CONTRIBUTING.md) for details on how to get started.
-
-## 📐 Architecture
-
-For a deep dive into the project's structure and design decisions, check out the [Architecture Overview](file:///Users/aksh/Downloads/rental_marketplace/ARCHITECTURE_OVERVIEW.md).
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](file:///Users/aksh/Downloads/rental_marketplace/LICENSE) file for details.
-
-## ⭐ Star the Repo!
-
-If you like what we're building, please consider giving us a ⭐ star on GitHub! It helps more people discover the project.
+</div>
 
 ---
 
-Built with ❤️ by [Akshay Kumar](https://github.com/akshay0611)
+## 🕹️ `// HAVENLY :: MISSION BRIEF`
+
+Havenly is a modern, high-fidelity rental marketplace inspired by premium discovery experiences.  
+It focuses on rich visuals, smooth interactions, responsive layouts, and contributor-friendly architecture.
+
+> `ELUSOC 2026 Mode`: This repo is actively maintained for open-source collaboration with a Minecraft-inspired community vibe.
+
+---
+
+## ✨ `// FEATURE LOADOUT`
+
+- **Premium UI/UX**: Clean visual language with intentional typography and spacing.
+- **Dynamic Property Grids**: Responsive cards and layouts for all screen sizes.
+- **Advanced Filtering**: In progress filtering by category, price, and location.
+- **Rich Media**: High-quality property imagery and smooth carousels.
+- **JAMstack Foundations**: Next.js + TypeScript + Tailwind CSS stack.
+
+---
+
+## 🧱 `// TECH STACK`
+
+- **Framework**: [Next.js (App Router)](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [Radix UI Primitives](https://www.radix-ui.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Deployment**: [Vercel](https://vercel.com/)
+
+---
+
+## 🚀 `// CONTRIBUTOR START (10 MIN QUEST)`
+
+```bash
+git clone https://github.com/akshay0611/havenly.git
+cd havenly
+pnpm install
+pnpm dev
+```
+
+Then open `http://localhost:3000`.
+
+For complete setup and troubleshooting: [SETUP.md](./SETUP.md)
+
+---
+
+## 🏆 `// ELUSOC 2026 :: CONTRIBUTION TIERS (PROJECT GUIDANCE)`
+
+> These tiers are **project guidance** for onboarding and issue complexity.  
+> They are not official ELUSOC points/rank rules.
+
+| Tier | Focus Area | Typical Tasks |
+|---|---|---|
+| 🟩 **Beginner** | First contributions | README/docs updates, typo fixes, small UI polish |
+| 🟦 **Intermediate** | Feature and bug work | component improvements, bug fixes, API/UI refinements |
+| 🟪 **Advanced** | System-level changes | architecture refactors, performance work, deeper integrations |
+
+---
+
+## 🗺️ `// ROADMAP`
+
+- [ ] **Data Persistence**: Live database and user authentication.
+- [ ] **Map View**: Location-based search with Google Maps or Mapbox.
+- [ ] **Host Dashboard**: Property management workflows for hosts.
+- [ ] **Booking Flow**: Reservation system and payment integration.
+
+---
+
+## 🤝 `// CONTRIBUTING`
+
+We welcome contributors of all levels.  
+Start with open issues, claim one, and submit a focused PR with clean commit history.
+
+- Contribution guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Issues board: [GitHub Issues](https://github.com/akshay0611/havenly/issues)
+
+---
+
+## 🧭 `// ARCHITECTURE`
+
+For the project structure and design decisions, see:
+[ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)
+
+---
+
+## 📄 `// LICENSE`
+
+This project is licensed under the MIT License.  
+See [LICENSE](./LICENSE) for details.
+
+---
+
+## ⭐ `// STAR THE REPO`
+
+If Havenly helps or inspires you, drop a star and share it with fellow builders.
+
+<div align="center">
+
+Built with care by [Akshay Kumar](https://github.com/akshay0611)
+
+</div>
