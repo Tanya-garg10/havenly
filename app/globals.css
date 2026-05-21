@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Airbnb-inspired color palette */
+  /* Havenly-inspired color palette */
   --background: #ffffff;
   --foreground: #222222;
   --card: #ffffff;
@@ -41,7 +41,7 @@
 }
 
 .dark {
-  /* Dark mode is not native to Airbnb, but generating a sensible adaptation */
+  /* Dark mode is not native to Havenly, but generating a sensible adaptation */
   --background: #121212;
   --foreground: #f7f7f7;
   --card: #1e1e1e;

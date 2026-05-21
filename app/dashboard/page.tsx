@@ -22,10 +22,10 @@ export default function DashboardPage() {
               const property = properties.find((p) => p.id === booking.propertyId);
               if (!property) return null;
               return (
-                <BookingCard 
-                  key={booking.id} 
-                  booking={booking} 
-                  property={property} 
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  property={property}
                   priority={index < 2}
                 />
               );
@@ -48,10 +48,10 @@ export default function DashboardPage() {
               const property = properties.find((p) => p.id === booking.propertyId);
               if (!property) return null;
               return (
-                <BookingCard 
-                  key={booking.id} 
-                  booking={booking} 
-                  property={property} 
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  property={property}
                   priority={index < 2}
                 />
               );
@@ -109,7 +109,7 @@ export default function DashboardPage() {
       <footer className="border-t border-border bg-muted py-12 mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground">
-            © 2025 Havenly, Inc. All rights reserved.
+            © 2026 Havenly, Inc. All rights reserved.
           </p>
         </div>
       </footer>

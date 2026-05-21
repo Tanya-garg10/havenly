@@ -177,11 +177,10 @@ export default function HostDashboardPage() {
                     </div>
                     <div className="flex-shrink-0">
                       <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                          booking.status === 'confirmed'
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${booking.status === 'confirmed'
                             ? 'bg-green-100 text-green-800'
                             : 'bg-blue-100 text-blue-800'
-                        }`}
+                          }`}
                       >
                         {booking.status.charAt(0).toUpperCase() +
                           booking.status.slice(1)}
@@ -213,7 +212,7 @@ export default function HostDashboardPage() {
       <footer className="border-t border-border bg-muted py-12 mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground">
-            © 2025 Airbnb, Inc. All rights reserved.
+            © 2026 Havenly, Inc. All rights reserved.
           </p>
         </div>
       </footer>

@@ -4,7 +4,7 @@
 
 ### Pixel-Perfect Rental Marketplace for Modern Explorers
 
-[![Live](https://img.shields.io/badge/Live%20Preview-Visit%20Site-00e5ff?style=for-the-badge&logo=vercel&logoColor=black)](https://havenly.vercel.app/)
+[![Live](https://img.shields.io/badge/Live%20Preview-Visit%20Site-00e5ff?style=for-the-badge&logo=vercel&logoColor=black)](https://havenly-hazel.vercel.app/)
 [![Issues](https://img.shields.io/badge/Open%20Issues-Contribute-ff66c4?style=for-the-badge&logo=github&logoColor=black)](https://github.com/akshay0611/havenly/issues)
 [![Contributing](https://img.shields.io/badge/Guide-CONTRIBUTING.md-7dff6b?style=for-the-badge&logo=bookstack&logoColor=black)](./CONTRIBUTING.md)
 

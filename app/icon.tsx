@@ -18,7 +18,7 @@ export default function Icon() {
       <div
         style={{
           fontSize: 24,
-          background: '#FF385C', // Havenly/Airbnb red
+          background: '#FF385C', // Havenly/Havenly red
           width: '100%',
           height: '100%',
           display: 'flex',
