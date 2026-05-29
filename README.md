@@ -32,6 +32,19 @@ It focuses on rich visuals, smooth interactions, responsive layouts, and contrib
 
 ---
 
+## ⭐ `// CONTRIBUTOR CHECKPOINT`
+
+Before claiming an issue or submitting a PR, contributors are expected to:
+
+- ⭐ Star this repository
+- 👀 Follow the maintainer on GitHub: https://github.com/akshay0611
+- 🍴 Fork the repository
+- 📖 Read CONTRIBUTING.md
+
+These steps help support the project and keep contributors informed about updates and announcements.
+
+---
+
 ## ✨ `// FEATURE LOADOUT`
 
 - **Premium UI/UX**: Clean visual language with intentional typography and spacing.
