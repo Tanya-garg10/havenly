@@ -1,0 +1,102 @@
+name: Thank You for Your Contribution
+
+on:
+pull_request:
+types: [closed]
+
+jobs:
+thank-contributor:
+runs-on: ubuntu-latest
+
+if: github.event.pull_request.merged == true
+
+permissions:
+  issues: write
+  pull-requests: write
+
+steps:
+  - name: Post thank you comment
+    uses: actions/github-script@v6
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      script: |
+        const prNumber = context.issue.number;
+        const owner = context.repo.owner;
+        const repo = context.repo.repo;
+        const contributor = context.payload.pull_request.user.login;
+
+        const commentBody = `
+        # 🎉 Quest Completed
+
+        Congratulations **@${contributor}**!
+
+        Your Pull Request has successfully been reviewed, approved, and merged into **Havenly – Premium Rental Marketplace**.
+
+        Welcome to the growing community of explorers helping build better experiences through open source. 🏕️
+
+        ---
+
+        ## 🏆 Adventure Log
+
+        | Status | Result |
+        |----------|----------|
+        | Quest Accepted | ✅ |
+        | Challenge Completed | ✅ |
+        | Review Passed | ✅ |
+        | Merged into Main Realm | ✅ |
+
+        ---
+
+        ## 🧭 Explorer Advancement
+
+        You have successfully completed a Havenly quest and earned your place in the project history.
+
+        ### Current Rank
+
+        🟢 **Trail Scout**
+
+        Continue contributing to advance through the explorer ranks:
+
+        🟢 Trail Scout  
+        🔵 Pathfinder  
+        🟣 Master Explorer
+
+        ---
+
+        ## 🌍 Continue Exploring
+
+        Looking for your next adventure?
+
+        - 🔎 Explore open issues
+        - ⚒️ Build new features
+        - 🐛 Hunt bugs
+        - 🤝 Help fellow contributors
+        - ⭐ Star the repository if you enjoyed contributing
+
+        Repository:
+        https://github.com/akshay0611/havenly
+
+        Issues:
+        https://github.com/akshay0611/havenly/issues
+
+        ---
+
+        ## ✨ Thank You
+
+        Every bug fixed, feature improved, and idea contributed helps make Havenly a better experience for explorers around the world.
+
+        Thank you for being part of the Havenly journey, **@${contributor}**.
+
+        ### 📊 Mission Status
+
+        🟢 Quest Successfully Completed
+
+        **— Havenly Team**
+        `;
+
+        await github.rest.issues.createComment({
+          owner,
+          repo,
+          issue_number: prNumber,
+          body: commentBody
+        });

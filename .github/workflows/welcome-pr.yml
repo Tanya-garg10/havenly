@@ -1,0 +1,64 @@
+name: Welcome New Pull Requests
+
+on:
+pull_request:
+types: [opened]
+
+jobs:
+welcome-pr:
+runs-on: ubuntu-latest
+
+permissions:
+  pull-requests: write
+  issues: write
+
+steps:
+  - name: Add welcome comment
+    uses: actions/github-script@v6
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      script: |
+        const prNumber = context.issue.number;
+        const owner = context.repo.owner;
+        const repo = context.repo.repo;
+
+        const commentBody = `
+        ⚔️ **Quest Submitted — Under Review**
+
+        Thank you for contributing to **Havenly – Premium Rental Marketplace**.
+
+        ### 🏕️ Pre-Quest Checklist
+
+        - 🔗 Ensure your Pull Request is linked to an assigned issue
+        - 🎯 Reference the issue number in the PR description (e.g. Closes #123)
+        - ✅ Your branch is up to date with \`main\`
+        - 🧪 Changes tested locally
+        - 📖 README reviewed
+        - 📚 CONTRIBUTING guide reviewed
+
+        ### 🧭 Review Journey
+
+        Your contribution will be reviewed for:
+
+        - Code Quality
+        - User Experience
+        - Project Standards
+        - Documentation
+
+        ### 🗺️ Quest Status
+
+        🟡 Under Explorer Review
+
+        Your contribution is now traveling through the Havenly review pipeline.
+
+        🚀 **Good luck, Pathfinder.**
+
+        **— Havenly Team**
+        `;
+
+        await github.rest.issues.createComment({
+          owner,
+          repo,
+          issue_number: prNumber,
+          body: commentBody
+        });

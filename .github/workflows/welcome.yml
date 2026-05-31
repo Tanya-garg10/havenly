@@ -1,0 +1,68 @@
+name: Welcome New Issues
+
+on:
+issues:
+types: [opened]
+
+jobs:
+welcome-comment:
+runs-on: ubuntu-latest
+
+permissions:
+  issues: write
+
+steps:
+  - name: Add welcome comment
+    uses: actions/github-script@v6
+    with:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      script: |
+        const issueNumber = context.issue.number;
+        const owner = context.repo.owner;
+        const repo = context.repo.repo;
+
+        const commentBody = `
+        🧭 **Explorer Registration Successful**
+
+        Thank you for opening an issue in **Havenly – Premium Rental Marketplace**.
+
+        Before beginning your journey, please complete the following checklist:
+
+        ### 🏕️ Explorer Checklist
+
+        - ⭐ [Star this repository](https://github.com/akshay0611/havenly)
+        - 👀 [Follow the maintainer](https://github.com/akshay0611)
+        - 📖 [Review the README.md](https://github.com/${owner}/${repo}/blob/main/README.md)
+        - 📚 [Review the CONTRIBUTING.md](https://github.com/${owner}/${repo}/blob/main/CONTRIBUTING.md)
+
+        These steps help explorers stay informed about project updates, contribution opportunities, and ELUSOC activities.
+
+        ### ⚔️ Quest Protocol
+
+        Please do **not open a Pull Request** until this issue has been officially assigned to you.
+
+        This helps ensure fair quest allocation and prevents multiple explorers from working on the same objective.
+
+        ### 🗺️ Mission Status
+
+        🟡 Awaiting Maintainer Review
+
+        Your quest request has been received and is now being reviewed by the Havenly team.
+
+        ### 🏆 Explorer Path
+
+        🟢 Trail Scout  
+        🔵 Pathfinder  
+        🟣 Master Explorer
+
+        ✨ **Good luck, Explorer. Your quest is now under review.**
+
+        **— Havenly Team**
+        `;
+
+        await github.rest.issues.createComment({
+          owner,
+          repo,
+          issue_number: issueNumber,
+          body: commentBody
+        });
