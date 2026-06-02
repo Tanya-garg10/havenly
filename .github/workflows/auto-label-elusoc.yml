@@ -1,0 +1,48 @@
+name: Auto-apply ELUSOC Label
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  apply-elusoc-label:
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+
+    steps:
+      - name: Apply ELUSOC label
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issueNumber = context.issue.number;
+            const labelName = 'ELUSOC';
+
+            // Check if label exists, create if not
+            try {
+              await github.rest.issues.getLabel({
+                owner,
+                repo,
+                name: labelName,
+              });
+            } catch (e) {
+              await github.rest.issues.createLabel({
+                owner,
+                repo,
+                name: labelName,
+                color: 'EAB308',
+                description: 'Official ELUSOC 2026 issue',
+              });
+            }
+
+            // Add label to the issue
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              labels: [labelName],
+            });
