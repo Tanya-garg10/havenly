@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { PropertyCard } from '@/components/PropertyCard';
 import { Property } from '@/lib/dummy-data';
 import { Navbar } from '@/components/Navbar';
-import {Footer} from "@/components/Footer";
+import {Footer} from '@/components/Footer';
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Property[]>([]);

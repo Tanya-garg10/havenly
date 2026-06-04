@@ -156,7 +156,7 @@ const saveFavorites = (favorites: Property[]) => {
               }`}
             >
               <span className="text-foreground">
-                ₹{Math.round(property.pricePerNight).toLocaleString()} for 2 nights
+                ₹{Math.round(property.pricePerNight*100).toLocaleString()} for 2 nights
               </span>
 
               <span className="mx-1.5 font-bold">·</span>
@@ -166,7 +166,7 @@ const saveFavorites = (favorites: Property[]) => {
                   size={11}
                   className="fill-foreground text-foreground"
                 />
-                {property.rating.toFixed(1)}
+                {property.rating.toFixed(2)}
               </span>
             </p>
           </div>
