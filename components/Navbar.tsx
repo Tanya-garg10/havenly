@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import { Heart} from 'lucide-react'
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -69,6 +69,23 @@ export function Navbar() {
                 <span className="absolute -bottom-2 w-4 border-b-2 border-foreground rounded-full"></span>
               )}
             </Link>
+
+
+          <Link
+              href="/favorites"
+              className={`relative flex flex-col items-center ${
+                pathname === "/favorites"
+                  ? "font-semibold text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Favorites
+              {pathname === "/favorites" && (
+                <span className="absolute -bottom-2 w-4 border-b-2 border-foreground rounded-full"></span>
+              )}
+            </Link>
+
+
           </div>
 
           {/* Desktop Right Menu */}
@@ -194,11 +211,21 @@ export function Navbar() {
                 Host Dashboard
               </button>
             </Link>
+          <Link
+              href="/favorites" className='block'>
+              <Button className="w-full px-0 py-2 text-left font-medium text-foreground hover:bg-muted bg-transparent rounded-lg flex items-center gap-2 mb-2">
+
+              <Heart size={12}/> Favorites
+              </Button>
+            </Link>
+
             <Link href="/host">
               <Button variant="ghost" size="sm" className="w-full text-foreground justify-start">
                 Become a host
               </Button>
             </Link>
+
+
             <hr className="my-2 border-border" />
             <button className="w-full px-4 py-2 text-left font-medium text-red-600 hover:bg-muted rounded-lg flex items-center gap-2">
               <LogOut size={18} />
