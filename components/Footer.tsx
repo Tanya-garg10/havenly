@@ -115,13 +115,13 @@ export function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-foreground">
             <span>© 2026 Havenly, Inc.</span>
             <span>·</span>
-            <a href="#" className="hover:underline">Privacy</a>
+            <a href="/privacy" className="hover:underline">Privacy</a>
             <span>·</span>
             <Link href="/terms" className="hover:underline">Terms</Link>
             <span>·</span>
-            <a href="#" className="hover:underline">Sitemap</a>
+            <a href="/sitemap" className="hover:underline">Sitemap</a>
             <span>·</span>
-            <a href="#" className="hover:underline">Company details</a>
+            <Link href="/company-details" className="hover:underline">Company details</Link>
           </div>
 
           <div className="flex items-center gap-6">
