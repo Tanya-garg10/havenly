@@ -181,7 +181,7 @@ export default function AntiDiscriminationPage() {
 
           <p className="mt-4 text-muted-foreground">
             Reports are reviewed seriously, confidentially, and fairly.
-            Our goal is to maintain a safe and inclusive environment for
+            Our goal is to maintain a safe, secure and inclusive environment for
             everyone using Havenly.
           </p>
         </div>
