@@ -192,7 +192,7 @@ export default function HostDashboardPage() {
           </h2>
           <div className="space-y-4">
             {hostBookings.slice(0, 5).map((booking) => {
-              const property = properties.find((p) => p.id === booking.propertyId);
+              const property = hostProperties.find((p) => p.id === booking.propertyId);
               if (!property) return null;
 
               return (
