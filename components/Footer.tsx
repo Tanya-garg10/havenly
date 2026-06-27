@@ -103,6 +103,7 @@ export function Footer() {
                 </Link>
               </li>
               <li><a href="/investors" className="hover:underline">Investors</a></li>
+              <li><Link href="/contributors" className="hover:underline">Contributors</Link></li>
               <li><a href="#" className="hover:underline">Havenly.org emergency stays</a></li>
             </ul>
           </div>
