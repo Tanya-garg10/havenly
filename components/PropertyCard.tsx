@@ -116,9 +116,10 @@ const saveFavorites = (favorites: Property[]) => {
             />
 
             {/* Badge */}
-            <div className="absolute left-3 top-3 rounded-full border border-black/5 bg-white px-3 py-1 text-[13px] font-medium text-foreground shadow-md">
+            <div className="absolute left-3 top-3 rounded-full border border-border bg-background px-3 py-1 text-[13px] font-medium text-foreground shadow-md">
               Guest favourite
             </div>
+            
 
             {/* Favorite Button */}
             <button

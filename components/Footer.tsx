@@ -2,13 +2,13 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-[#F7F7F7] border-t border-border pt-12 pb-8">
+    <footer className="bg-background border-t border-border pt-12 pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Inspiration Section */}
         <div className="mb-12">
           <h2 className="text-[22px] font-semibold text-foreground mb-4">Inspiration for future getaways</h2>
-          <div className="flex gap-6 border-b border-black/10 overflow-x-auto hide-scrollbar mb-8">
+          <div className="flex gap-6 border-b border-border overflow-x-auto hide-scrollbar mb-8">
             {['Popular', 'Arts & culture', 'Beach', 'Mountains', 'Outdoors', 'Things to do'].map((tab, i) => (
               <button key={tab} className={`pb-4 text-sm font-medium transition-colors whitespace-nowrap ${i === 0 ? 'border-b-2 border-foreground text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
                 {tab}
@@ -42,7 +42,7 @@ export function Footer() {
           </div>
         </div>
 
-        <hr className="border-black/5 mb-12" />
+        <hr className="border-border mb-12" />
 
         {/* Links Grid */}
         <div className="grid gap-8 grid-cols-1 md:grid-cols-3 mb-12">
@@ -108,7 +108,7 @@ export function Footer() {
           </div>
         </div>
 
-        <hr className="border-black/5 mb-6" />
+        <hr className="border-border mb-6" />
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">

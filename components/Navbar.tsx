@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import {ThemeToggle} from '@/components/theme-toggle';
 import { Search, Menu, X, LogOut, LayoutDashboard, Home } from 'lucide-react';
 import { usePathname } from "next/navigation";
 import { useState } from 'react';
@@ -13,7 +14,7 @@ export function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
   return (
-    <nav className="sticky top-0 z-40 border-b border-border bg-white pb-6 pt-5">
+    <nav className="sticky top-0 z-40 border-b border-border bg-background pb-6 pt-5">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -92,6 +93,14 @@ export function Navbar() {
                 Become a host
               </Button>
             </Link>
+            
+            {/* Added ThemeToggle here */}
+            <ThemeToggle />
+            <Button variant="ghost" size="icon" className="rounded-full text-foreground hover:bg-muted">
+                {/* Globe Icon */}
+            </Button>
+
+
             <Button variant="ghost" size="icon" className="rounded-full text-foreground hover:bg-muted">
               {/* Globe Icon simplified as SVG outline */}
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
@@ -101,7 +110,7 @@ export function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-3 rounded-full border border-border px-3 py-2 hover:shadow-md transition-shadow bg-white ml-2"
+                className="flex items-center gap-3 rounded-full border border-border px-3 py-2 hover:shadow-md transition-shadow bg-background ml-2"
               >
                 <Menu size={18} className="text-foreground shrink-0" />
                 <div className="h-8 w-8 shrink-0 rounded-full bg-muted flex items-center justify-center overflow-hidden">
@@ -116,7 +125,7 @@ export function Navbar() {
 
               {/* Dropdown Menu */}
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-border bg-white shadow-lg">
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-border bg-background shadow-lg">
                   <Link href="/dashboard" className="block">
                     <button className="w-full px-4 py-2 text-left text-sm font-medium text-foreground hover:bg-muted flex items-center gap-2">
                       <LayoutDashboard size={16} />
@@ -155,7 +164,7 @@ export function Navbar() {
 
         {/* Expanded Search Bar - Desktop */}
         <div className="hidden md:flex justify-center mt-6 mb-2">
-          <div className="flex w-full max-w-[850px] items-center rounded-full border border-border bg-white shadow-md">
+          <div className="flex w-full max-w-[850px] items-center rounded-full border border-border bg-background shadow-md">
             {/* Where */}
             <div className="flex-1 px-8 py-3 hover:bg-muted rounded-full cursor-pointer transition">
               <div className="text-[12px] font-bold text-foreground tracking-wide">Where</div>
@@ -196,6 +205,11 @@ export function Navbar() {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="border-t border-border py-4 md:hidden">
+            <div className="flex items-center justify-between px-4 py-2 mb-2">
+               <span className="text-foreground font-medium">Theme</span>
+               <ThemeToggle />
+            </div>
+
             <Link href="/dashboard" className="block">
               <button className="w-full px-4 py-2 text-left font-medium text-foreground hover:bg-muted rounded-lg flex items-center gap-2 mb-2">
                 <LayoutDashboard size={18} />
