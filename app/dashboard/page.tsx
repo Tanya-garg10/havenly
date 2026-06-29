@@ -5,11 +5,14 @@ import { DashboardTabs } from '@/components/DashboardTabs';
 import { BookingCard } from '@/components/BookingCard';
 import { bookings, properties, currentUser } from '@/lib/dummy-data';
 import { Card } from '@/components/ui/card';
+import { useState } from 'react';
 
 export default function DashboardPage() {
+  const [bookingList, setBookingList] = useState(bookings);
+
   // Separate bookings by status
-  const upcomingBookings = bookings.filter((b) => b.status === 'upcoming' || b.status === 'confirmed');
-  const pastBookings = bookings.filter((b) => b.status === 'completed' || b.status === 'cancelled');
+  const upcomingBookings = bookingList.filter((b) => b.status === 'upcoming' || b.status === 'confirmed');
+  const pastBookings = bookingList.filter((b) => b.status === 'completed' || b.status === 'cancelled');
 
   const getTabs = () => [
     {
@@ -27,6 +30,11 @@ export default function DashboardPage() {
                   booking={booking}
                   property={property}
                   priority={index < 2}
+                  onCancel={(id) => {
+                    setBookingList((prev) =>
+                      prev.map((b) => (b.id === id ? { ...b, status: 'cancelled' } : b))
+                    );
+                  }}
                 />
               );
             })
@@ -53,6 +61,11 @@ export default function DashboardPage() {
                   booking={booking}
                   property={property}
                   priority={index < 2}
+                  onCancel={(id) => {
+                    setBookingList((prev) =>
+                      prev.map((b) => (b.id === id ? { ...b, status: 'cancelled' } : b))
+                    );
+                  }}
                 />
               );
             })
@@ -70,8 +83,7 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        {/* Header */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             My Bookings
