@@ -11,9 +11,11 @@ import { EditProfileModal } from '@/components/EditProfileModal';
 export default function DashboardPage() {
   const [user, setUser] = useState<User>(currentUser);
   const [editOpen, setEditOpen] = useState(false);
+  const [bookingList, setBookingList] = useState(bookings);
+
   // Separate bookings by status
-  const upcomingBookings = bookings.filter((b) => b.status === 'upcoming' || b.status === 'confirmed');
-  const pastBookings = bookings.filter((b) => b.status === 'completed' || b.status === 'cancelled');
+  const upcomingBookings = bookingList.filter((b) => b.status === 'upcoming' || b.status === 'confirmed');
+  const pastBookings = bookingList.filter((b) => b.status === 'completed' || b.status === 'cancelled');
 
   const getTabs = () => [
     {
@@ -31,6 +33,11 @@ export default function DashboardPage() {
                   booking={booking}
                   property={property}
                   priority={index < 2}
+                  onCancel={(id) => {
+                    setBookingList((prev) =>
+                      prev.map((b) => (b.id === id ? { ...b, status: 'cancelled' } : b))
+                    );
+                  }}
                 />
               );
             })
@@ -57,6 +64,11 @@ export default function DashboardPage() {
                   booking={booking}
                   property={property}
                   priority={index < 2}
+                  onCancel={(id) => {
+                    setBookingList((prev) =>
+                      prev.map((b) => (b.id === id ? { ...b, status: 'cancelled' } : b))
+                    );
+                  }}
                 />
               );
             })
@@ -123,7 +135,7 @@ export default function DashboardPage() {
       <footer className="border-t border-border bg-muted py-12 mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground">
-            © 2026 Havenly, Inc. All rights reserved.
+            &copy; 2026 Havenly, Inc. All rights reserved.
           </p>
         </div>
       </footer>

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { PropertyCard } from '@/components/PropertyCard';
-import { properties, Property } from '@/lib/dummy-data';
+import { Property } from '@/lib/dummy-data';
+import { getStoredProperties } from '@/lib/properties';
 import { Footer } from "@/components/Footer";
 import Image from 'next/image';
 
@@ -91,10 +92,15 @@ function PropertySection({ title, items, locationName }: PropertySectionProps) {
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [propertyList, setPropertyList] = useState<Property[]>(getStoredProperties());
+
+  useEffect(() => {
+    setPropertyList(getStoredProperties());
+  }, []);
 
   const filteredProperties = selectedCategory
-    ? properties.filter((p) => p.category === selectedCategory)
-    : properties;
+    ? propertyList.filter((p) => p.category === selectedCategory)
+    : propertyList;
 
   return (
     <main className="min-h-screen bg-background">
@@ -106,17 +112,17 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <PropertySection
             title="Popular homes in Varanasi"
-            items={properties.slice(0, 6)}
+            items={propertyList.slice(0, 6)}
             locationName="Varanasi"
           />
           <PropertySection
             title="Available in Kolkata this weekend"
-            items={properties.slice(2, 8)}
+            items={propertyList.slice(2, 8)}
             locationName="Kolkata"
           />
           <PropertySection
             title="Stay in Gautam Buddha Nagar"
-            items={properties.slice(4, 9)}
+            items={propertyList.slice(4, 9)}
             locationName="Gautam Buddha Nagar"
           />
         </div>

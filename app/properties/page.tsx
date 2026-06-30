@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { PropertyCard } from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
-import { properties } from '@/lib/dummy-data';
+import { Property } from '@/lib/dummy-data';
+import { getStoredProperties } from '@/lib/properties';
 import { Menu, ArrowUpDown } from 'lucide-react';
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'rating';
@@ -15,9 +16,14 @@ export default function PropertiesPage() {
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [priceFilter, setPriceFilter] = useState({ min: 0, max: 1000 });
   const [ratingFilter, setRatingFilter] = useState(0);
+  const [propertyList, setPropertyList] = useState<Property[]>(getStoredProperties());
+
+  useEffect(() => {
+    setPropertyList(getStoredProperties());
+  }, []);
 
   // Filter properties
-  let filtered = properties.filter((p) => {
+  let filtered = propertyList.filter((p) => {
     const matchesPrice =
       p.pricePerNight >= priceFilter.min && p.pricePerNight <= priceFilter.max;
     const matchesRating = p.rating >= ratingFilter;

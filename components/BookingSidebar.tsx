@@ -5,6 +5,7 @@ import { Calendar, Users, Star, Share2, Heart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Property } from '@/lib/dummy-data';
+import { useToast } from '@/hooks/use-toast';
 
 interface BookingSidebarProps {
   property: Property;
@@ -12,6 +13,7 @@ interface BookingSidebarProps {
 
 export function BookingSidebar({ property }: BookingSidebarProps) {
   const [guests, setGuests] = useState(1);
+  const { toast } = useToast();
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [isSaved, setIsSaved] = useState(false);
@@ -162,7 +164,15 @@ export function BookingSidebar({ property }: BookingSidebarProps) {
 
       {/* Share and Save */}
       <div className="flex gap-3 border-t border-border pt-6">
-        <Button variant="outline" className="flex-1" size="sm">
+        <Button
+          variant="outline"
+          className="flex-1"
+          size="sm"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            toast({ title: 'Link copied to clipboard!' });
+          }}
+        >
           <Share2 size={16} className="mr-2" />
           Share
         </Button>

@@ -6,14 +6,16 @@ import { Booking, Property } from '@/lib/dummy-data';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, MapPin, MessageSquare } from 'lucide-react';
+import { useCallback } from 'react';
 
 interface BookingCardProps {
   booking: Booking;
   property: Property;
   priority?: boolean;
+  onCancel?: (id: string) => void;
 }
 
-export function BookingCard({ booking, property, priority = false }: BookingCardProps) {
+export function BookingCard({ booking, property, priority = false, onCancel }: BookingCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'confirmed':
@@ -68,6 +70,7 @@ export function BookingCard({ booking, property, priority = false }: BookingCard
         <div className="flex flex-col justify-between p-4 md:p-6 flex-1">
           {/* Title and Status */}
           <div className="mb-4">
+            {/* Cancel button will be rendered in actions */}
             <div className="flex items-start justify-between gap-4 mb-2">
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground mb-1">
@@ -112,9 +115,18 @@ export function BookingCard({ booking, property, priority = false }: BookingCard
                 View Property
               </Button>
             </Link>
-            {booking.status === 'confirmed' || booking.status === 'completed' ? (
-              <Button variant="outline" size="sm" className="flex-shrink-0">
-                <MessageSquare size={16} />
+            {booking.status === 'confirmed' || booking.status === 'upcoming' ? (
+              <Button
+                variant="destructive"
+                size="sm"
+                className="flex-shrink-0"
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) {
+                    onCancel && onCancel(booking.id);
+                  }
+                }}
+              >
+                Cancel
               </Button>
             ) : null}
           </div>

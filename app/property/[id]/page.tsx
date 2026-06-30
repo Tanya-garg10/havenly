@@ -1,19 +1,22 @@
 'use client';
 
-import React, { use } from 'react';
+import React, { use, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Navbar } from '@/components/Navbar';
 import { ImageGallery } from '@/components/ImageGallery';
 import { BookingSidebar } from '@/components/BookingSidebar';
 import { ReviewCard } from '@/components/ReviewCard';
+import { ReviewForm } from '@/components/ReviewForm';
 import {
-  properties,
+  Property,
   reviews,
   hosts,
   amenities as allAmenities,
 } from '@/lib/dummy-data';
+import { getStoredProperties } from '@/lib/properties';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import {
   Star,
   MapPin,
@@ -54,11 +57,62 @@ const amenityIconMap: Record<string, React.ReactNode> = {
 
 export default function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const property = properties.find((p) => p.id === id);
+  const { toast } = useToast();
+  const [property, setProperty] = useState<Property | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const allProps = getStoredProperties();
+    const found = allProps.find((p) => p.id === id);
+    setProperty(found);
+    setLoading(false);
+  }, [id]);
+
   const host = property ? hosts.find((h) => h.id === property.hostId) : null;
   const propertyReviews = property
     ? reviews.filter((r) => r.propertyId === property.id)
     : [];
+
+  const [userReviews, setUserReviews] = useState<typeof propertyReviews>([]);
+
+  useEffect(() => {
+    if (!property) return;
+    try {
+      const stored = localStorage.getItem(`havenly-reviews-${property.id}`);
+      if (stored) {
+        const parsed = JSON.parse(stored).map((r: Record<string, unknown>) => ({
+          ...r,
+          createdAt: new Date(r.createdAt as string),
+        }));
+        setUserReviews(parsed);
+      }
+    } catch {}
+  }, [property]);
+
+  const handleReviewSubmit = useCallback(
+    (review: (typeof propertyReviews)[number]) => {
+      setUserReviews((prev) => {
+        const updated = [review, ...prev];
+        localStorage.setItem(`havenly-reviews-${review.propertyId}`, JSON.stringify(updated));
+        return updated;
+      });
+      toast({ title: 'Review submitted!', description: 'Thank you for your feedback.' });
+    },
+    [toast]
+  );
+
+  const allReviews = [...userReviews, ...propertyReviews];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center py-20">
+          <p className="text-muted-foreground">Loading property details...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!property || !host) {
     return (
@@ -110,7 +164,14 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
 
           {/* Share and Save Buttons */}
           <div className="flex gap-2 flex-shrink-0">
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                toast({ title: 'Link copied to clipboard!' });
+              }}
+            >
               <Share2 size={16} />
             </Button>
             <Button variant="outline" size="sm">
@@ -233,17 +294,18 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
             {/* Reviews */}
             <div>
               <h3 className="text-xl font-bold text-foreground mb-4">
-                Reviews ({propertyReviews.length})
+                Reviews ({allReviews.length})
               </h3>
               <div className="space-y-4">
-                {propertyReviews.length > 0 ? (
-                  propertyReviews.map((review) => (
+                {allReviews.length > 0 ? (
+                  allReviews.map((review) => (
                     <ReviewCard key={review.id} review={review} />
                   ))
                 ) : (
-                  <p className="text-muted-foreground">No reviews yet</p>
+                  <p className="text-muted-foreground">No reviews yet. Be the first to share your experience!</p>
                 )}
               </div>
+              <ReviewForm propertyId={property.id} onSubmit={handleReviewSubmit} />
             </div>
           </div>
 

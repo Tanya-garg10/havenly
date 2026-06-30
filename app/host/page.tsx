@@ -1,17 +1,50 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { properties, hosts, bookings } from '@/lib/dummy-data';
+import { Property, hosts, bookings } from '@/lib/dummy-data';
 import { Edit, Trash2, Plus, Eye, Calendar, Users } from 'lucide-react';
+import { getStoredProperties, deleteStoredProperty } from '@/lib/properties';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export default function HostDashboardPage() {
-  // Get current host's properties
   const currentHostId = 'host-1'; // Mock current host
-  const hostProperties = properties.filter((p) => p.hostId === currentHostId);
+  const [hostProperties, setHostProperties] = useState<Property[]>([]);
+  const [deletingPropertyId, setDeletingPropertyId] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const allProps = getStoredProperties();
+    setHostProperties(allProps.filter((p) => p.hostId === currentHostId));
+  }, []);
+
+  const handleDeleteConfirm = () => {
+    if (deletingPropertyId) {
+      const deletedProperty = hostProperties.find(p => p.id === deletingPropertyId);
+      deleteStoredProperty(deletingPropertyId);
+      setHostProperties((prev) => prev.filter((p) => p.id !== deletingPropertyId));
+      setDeletingPropertyId(null);
+      toast({
+        title: 'Property deleted',
+        description: `${deletedProperty?.title || 'Property'} has been successfully deleted.`,
+      });
+    }
+  };
+
   const hostBookings = bookings.filter((b) =>
     hostProperties.some((p) => p.id === b.propertyId)
   );
@@ -131,10 +164,16 @@ export default function HostDashboardPage() {
                             <Eye size={16} className="text-foreground" />
                           </button>
                         </Link>
-                        <button className="p-2 hover:bg-muted rounded transition" title="Edit">
-                          <Edit size={16} className="text-foreground" />
-                        </button>
-                        <button className="p-2 hover:bg-red-100 text-red-600 rounded transition" title="Delete">
+                        <Link href={`/host/edit/${property.id}`}>
+                          <button className="p-2 hover:bg-muted rounded transition" title="Edit">
+                            <Edit size={16} className="text-foreground" />
+                          </button>
+                        </Link>
+                        <button 
+                          onClick={() => setDeletingPropertyId(property.id)}
+                          className="p-2 hover:bg-red-100 text-red-600 rounded transition" 
+                          title="Delete"
+                        >
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -153,7 +192,7 @@ export default function HostDashboardPage() {
           </h2>
           <div className="space-y-4">
             {hostBookings.slice(0, 5).map((booking) => {
-              const property = properties.find((p) => p.id === booking.propertyId);
+              const property = hostProperties.find((p) => p.id === booking.propertyId);
               if (!property) return null;
 
               return (
@@ -216,6 +255,23 @@ export default function HostDashboardPage() {
           </p>
         </div>
       </footer>
+
+      <AlertDialog open={deletingPropertyId !== null} onOpenChange={(open) => !open && setDeletingPropertyId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your property listing from Havenly.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-red-600 hover:bg-red-700 text-white border-red-600">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

@@ -2,13 +2,13 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-[#F7F7F7] border-t border-border pt-12 pb-8">
+    <footer className="bg-background border-t border-border pt-12 pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Inspiration Section */}
         <div className="mb-12">
           <h2 className="text-[22px] font-semibold text-foreground mb-4">Inspiration for future getaways</h2>
-          <div className="flex gap-6 border-b border-black/10 overflow-x-auto hide-scrollbar mb-8">
+          <div className="flex gap-6 border-b border-border overflow-x-auto hide-scrollbar mb-8">
             {['Popular', 'Arts & culture', 'Beach', 'Mountains', 'Outdoors', 'Things to do'].map((tab, i) => (
               <button key={tab} className={`pb-4 text-sm font-medium transition-colors whitespace-nowrap ${i === 0 ? 'border-b-2 border-foreground text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
                 {tab}
@@ -42,7 +42,7 @@ export function Footer() {
           </div>
         </div>
 
-        <hr className="border-black/5 mb-12" />
+        <hr className="border-border mb-12" />
 
         {/* Links Grid */}
         <div className="grid gap-8 grid-cols-1 md:grid-cols-3 mb-12">
@@ -85,11 +85,35 @@ export function Footer() {
             <h3 className="font-semibold text-sm text-foreground mb-4">Hosting</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li><a href="/havenly-your-home" className="hover:underline">Havenly your home</a></li>
-              <li><a href="#" className="hover:underline">AirCover for Hosts</a></li>
-              <li><a href="/hosting-resources" className="hover:underline">Hosting resources</a></li>
-              <li><a href="#" className="hover:underline">Community forum</a></li>
-              <li><Link href="/hosting-responsibility" className="hover:underline">Hosting responsibly</Link></li>
-              <li><a href="/free-hosting-class" className="hover:underline">Join a free hosting class</a></li>
+              <li>
+                <Link href="/aircover-hosts" className="hover:underline">
+                  AirCover for Hosts
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/hosting-resources" className="hover:underline">
+                  Hosting resources
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/community-forum" className="hover:underline">
+                  Community forum
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/hosting-responsibility" className="hover:underline">
+                  Hosting responsibly
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/free-hosting-class" className="hover:underline">
+                  Join a free hosting class
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -103,12 +127,13 @@ export function Footer() {
                 </Link>
               </li>
               <li><a href="/investors" className="hover:underline">Investors</a></li>
-              <li><a href="#" className="hover:underline">Havenly.org emergency stays</a></li>
+              <li><Link href="/contributors" className="hover:underline">Contributors</Link></li>
+              <li><a href="/emergency-stay" className="hover:underline">Havenly.org emergency stays</a></li>
             </ul>
           </div>
         </div>
 
-        <hr className="border-black/5 mb-6" />
+        <hr className="border-border mb-6" />
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
