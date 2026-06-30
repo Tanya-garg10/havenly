@@ -1,12 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { DashboardTabs } from '@/components/DashboardTabs';
 import { BookingCard } from '@/components/BookingCard';
-import { bookings, properties, currentUser } from '@/lib/dummy-data';
+import { bookings, properties, currentUser, User } from '@/lib/dummy-data';
 import { Card } from '@/components/ui/card';
+import { EditProfileModal } from '@/components/EditProfileModal';
 
 export default function DashboardPage() {
+  const [user, setUser] = useState<User>(currentUser);
+  const [editOpen, setEditOpen] = useState(false);
   // Separate bookings by status
   const upcomingBookings = bookings.filter((b) => b.status === 'upcoming' || b.status === 'confirmed');
   const pastBookings = bookings.filter((b) => b.status === 'completed' || b.status === 'cancelled');
@@ -77,7 +81,7 @@ export default function DashboardPage() {
             My Bookings
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {currentUser.name}!
+            Welcome back, {user.name}!
           </p>
         </div>
 
@@ -86,20 +90,30 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                {currentUser.name}
+                {user.name}
               </h2>
               <p className="text-muted-foreground mb-4">
-                Member since {currentUser.joinedDate.getFullYear()}
+                Member since {user.joinedDate.getFullYear()}
               </p>
               <p className="text-foreground text-sm">
-                {currentUser.email}
+                {user.email}
               </p>
             </div>
-            <button className="px-6 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition font-medium">
+            <button
+              onClick={() => setEditOpen(true)}
+              className="px-6 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition font-medium"
+            >
               Edit Profile
             </button>
           </div>
         </Card>
+
+        <EditProfileModal
+          open={editOpen}
+          onOpenChange={setEditOpen}
+          user={user}
+          onSave={setUser}
+        />
 
         {/* Bookings Tabs */}
         <DashboardTabs tabs={getTabs()} defaultTab="upcoming" />
