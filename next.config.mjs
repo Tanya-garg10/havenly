@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // TypeScript errors will now correctly fail the build.
+  // Do NOT re-add ignoreBuildErrors: true — fix type errors instead.
 
   images: {
     unoptimized: true,
