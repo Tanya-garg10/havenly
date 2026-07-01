@@ -1,10 +1,4 @@
 import Image from "next/image";
-import beachImage from "../images/beach.png";
-import wellnessImage from "../images/wellness.png"
-import safariImage from "../images/safari.png"
-import tajImage from "../images/taj.png"
-import foodImage from "../images/food.png"
-import mountainImage from "../images/mountain.png"
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -14,37 +8,37 @@ const experiences = [
     title: "Mountain Adventure",
     description: "Guided treks through breathtaking mountain landscapes.",
     image:
-      mountainImage,
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Food Discovery",
     description: "Taste authentic local cuisine and culinary traditions.",
     image:
-      foodImage,
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Cultural Heritage Tour",
     description: "Explore history, architecture, and local traditions.",
     image:
-      tajImage,
+      "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Wildlife Safari",
     description: "Get closer to nature with unforgettable wildlife encounters.",
     image:
-      safariImage,
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Beach Escape",
     description: "Relax and recharge on stunning coastal destinations.",
     image:
-      beachImage,
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Wellness Retreat",
     description: "Reconnect with yourself through wellness experiences.",
     image:
-      wellnessImage,
+      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
   },
 ];
 

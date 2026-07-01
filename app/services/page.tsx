@@ -1,10 +1,4 @@
 import Image from "next/image";
-import travelImage from "../images/travel.png";
-import airportTravel from "../images/airport_travel.png"
-import local from "../images/local.png"
-import stay from "../images/stay.png"
-import group from "../images/group.png"
-import bed from "../images/bed.png"
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -15,42 +9,42 @@ const services = [
     description:
       "Personalized itineraries and travel recommendations tailored to your needs.",
     image:
-      travelImage,
+      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Airport Transfers",
     description:
       "Reliable airport pickup and drop-off services for a stress-free journey.",
     image:
-      airportTravel,
+      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Local Guides",
     description:
       "Discover destinations with experienced local guides and curated tours.",
     image:
-      local,
+      "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Concierge Support",
     description:
       "24/7 assistance to help with bookings, recommendations, and travel needs.",
     image:
-      stay,
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Group Travel",
     description:
       "Organized travel solutions for families, friends, and corporate teams.",
     image:
-      group,
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Premium Stays",
     description:
       "Access carefully selected luxury accommodations and unique stays.",
     image:
-      bed,
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
