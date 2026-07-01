@@ -16,3 +16,8 @@ node_modules
 .DS_Store
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# Only pnpm is the supported package manager (see CONTRIBUTING.md / SETUP.md).
+# Ignore npm/yarn lockfiles to prevent accidental dependency drift.
+package-lock.json
+yarn.lock
