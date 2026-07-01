@@ -1,17 +1,43 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PropertyCard } from '@/components/PropertyCard';
+import { PropertyCard, getFavoriteIds } from '@/components/PropertyCard';
 import { Property } from '@/lib/dummy-data';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { getFavorites } from '@/components/PropertyCard';
+import { getStoredProperties } from '@/lib/properties';
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Property[]>([]);
 
+  const loadFavorites = () => {
+    // Get the current favorite IDs from localStorage
+    const ids = getFavoriteIds();
+    if (ids.length === 0) {
+      setFavorites([]);
+      return;
+    }
+
+    // Look up live property data for each ID so that edits to listings
+    // are reflected here rather than showing stale cached copies.
+    const allProperties = getStoredProperties();
+    const live = allProperties.filter((p) => ids.includes(p.id));
+    setFavorites(live);
+  };
+
   useEffect(() => {
-    setFavorites(getFavorites());
+    loadFavorites();
+
+    // Re-sync whenever favorites change (e.g. user unfavorites from another tab)
+    const handleUpdate = () => loadFavorites();
+    window.addEventListener('favoritesUpdated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+
+    return () => {
+      window.removeEventListener('favoritesUpdated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
