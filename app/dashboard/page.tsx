@@ -1,13 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { DashboardTabs } from '@/components/DashboardTabs';
 import { BookingCard } from '@/components/BookingCard';
-import { bookings, properties, currentUser } from '@/lib/dummy-data';
+import { bookings, properties, currentUser, User } from '@/lib/dummy-data';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
+import { EditProfileModal } from '@/components/EditProfileModal';
 
 export default function DashboardPage() {
+  const [user, setUser] = useState<User>(currentUser);
+  const [editOpen, setEditOpen] = useState(false);
   const [bookingList, setBookingList] = useState(bookings);
 
   // Separate bookings by status
@@ -83,13 +86,14 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">        {/* Header */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             My Bookings
           </h1>
           <p className="text-muted-foreground">
-            Welcome back, {currentUser.name}!
+            Welcome back, {user.name}!
           </p>
         </div>
 
@@ -98,20 +102,30 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                {currentUser.name}
+                {user.name}
               </h2>
               <p className="text-muted-foreground mb-4">
-                Member since {currentUser.joinedDate.getFullYear()}
+                Member since {user.joinedDate.getFullYear()}
               </p>
               <p className="text-foreground text-sm">
-                {currentUser.email}
+                {user.email}
               </p>
             </div>
-            <button className="px-6 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition font-medium">
+            <button
+              onClick={() => setEditOpen(true)}
+              className="px-6 py-2 rounded-lg border border-border text-foreground hover:bg-muted transition font-medium"
+            >
               Edit Profile
             </button>
           </div>
         </Card>
+
+        <EditProfileModal
+          open={editOpen}
+          onOpenChange={setEditOpen}
+          user={user}
+          onSave={setUser}
+        />
 
         {/* Bookings Tabs */}
         <DashboardTabs tabs={getTabs()} defaultTab="upcoming" />
@@ -121,7 +135,7 @@ export default function DashboardPage() {
       <footer className="border-t border-border bg-muted py-12 mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-muted-foreground">
-            © 2026 Havenly, Inc. All rights reserved.
+            &copy; 2026 Havenly, Inc. All rights reserved.
           </p>
         </div>
       </footer>
