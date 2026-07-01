@@ -103,17 +103,50 @@ export function PropertyWizard({
     );
   };
 
+  // Limits: max 10 images total, max 2 MB per file.
+  // Base64 encoding adds ~33% overhead, so 2 MB source ≈ 2.67 MB stored.
+  // Enforcing these limits avoids localStorage QuotaExceededError.
+  const MAX_IMAGES = 10;
+  const MAX_FILE_SIZE_MB = 2;
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
-      Array.from(files).forEach((file) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setUploadedImages((prev) => [...prev, reader.result as string]);
-        };
-        reader.readAsDataURL(file);
-      });
+    if (!files) return;
+
+    const remaining = MAX_IMAGES - uploadedImages.length;
+    if (remaining <= 0) {
+      alert(`You can upload a maximum of ${MAX_IMAGES} images.`);
+      e.target.value = '';
+      return;
     }
+
+    const allowed = Array.from(files).slice(0, remaining);
+    const oversized = Array.from(files).filter(
+      (f) => f.size > MAX_FILE_SIZE_MB * 1024 * 1024
+    );
+
+    if (oversized.length > 0) {
+      alert(
+        `The following files exceed the ${MAX_FILE_SIZE_MB} MB limit and were skipped:\n` +
+          oversized.map((f) => `• ${f.name}`).join('\n') +
+          '\n\nPlease compress or resize them before uploading.'
+      );
+    }
+
+    const validFiles = allowed.filter(
+      (f) => f.size <= MAX_FILE_SIZE_MB * 1024 * 1024
+    );
+
+    validFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImages((prev) => [...prev, reader.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input so the same files can be selected again if needed
+    e.target.value = '';
   };
 
   const removeImage = (index: number) => {

@@ -9,7 +9,13 @@ export function getStoredProperties(): Property[] {
   
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProperties));
+    // Seed localStorage with default properties on first run.
+    // Use a try/catch in case localStorage is unavailable (e.g. private browsing).
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProperties));
+    } catch {
+      // localStorage unavailable — silently fall back to in-memory defaults.
+    }
     return defaultProperties;
   }
   
@@ -35,13 +41,38 @@ export function saveStoredProperty(property: Property): Property[] {
     properties.push(property);
   }
   
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(properties));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(properties));
+  } catch (err: unknown) {
+    // Detect QuotaExceededError (standard DOMException name across browsers)
+    const isQuotaError =
+      err instanceof DOMException &&
+      (err.name === 'QuotaExceededError' || err.name === 'NS_ERROR_DOM_QUOTA_REACHED');
+
+    if (isQuotaError) {
+      // Surface a clear, user-friendly message instead of failing silently
+      alert(
+        'Could not save your listing — browser storage is full.\n\n' +
+          'Tips:\n' +
+          '• Reduce the number or size of uploaded images (max 10 images, 2 MB each).\n' +
+          '• Remove some saved drafts from your dashboard.\n' +
+          '• Try a different browser or clear site data.'
+      );
+    } else {
+      console.error('Failed to save property to localStorage:', err);
+    }
+  }
+
   return properties;
 }
 
 export function deleteStoredProperty(id: string): Property[] {
   const properties = getStoredProperties();
   const filtered = properties.filter((p) => p.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+  } catch (err) {
+    console.error('Failed to delete property from localStorage:', err);
+  }
   return filtered;
 }
