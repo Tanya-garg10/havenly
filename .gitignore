@@ -20,4 +20,7 @@ tsconfig.tsbuildinfo
 # Only pnpm is the supported package manager (see CONTRIBUTING.md / SETUP.md).
 # Ignore npm/yarn lockfiles to prevent accidental dependency drift.
 package-lock.json
-yarn.lock
+yarn.lock
+
+# Ignore app/images to prevent massive binary files from bloating the repo size
+app/images/

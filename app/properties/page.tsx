@@ -20,6 +20,15 @@ export default function PropertiesPage() {
 
   useEffect(() => {
     setPropertyList(getStoredProperties());
+
+    const handleUpdate = () => {
+      setPropertyList(getStoredProperties());
+    };
+
+    window.addEventListener('propertiesUpdated', handleUpdate);
+    return () => {
+      window.removeEventListener('propertiesUpdated', handleUpdate);
+    };
   }, []);
 
   // Filter properties

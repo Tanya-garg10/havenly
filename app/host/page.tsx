@@ -30,15 +30,25 @@ export default function HostDashboardPage() {
   const [bookingAction, setBookingAction] = useState<{id: string; action: "accept" | "decline";} | null>(null);
 
   useEffect(() => {
-    const allProps = getStoredProperties();
-    const filtered = allProps.filter((p) => p.hostId === currentHostId);
-    setHostProperties(filtered);
+    const loadProperties = () => {
+      const allProps = getStoredProperties();
+      const filtered = allProps.filter((p) => p.hostId === currentHostId);
+      setHostProperties(filtered);
 
-    setHostBookings(
-      bookings.filter((booking) =>
-        filtered.some((property) => property.id === booking.propertyId)
-      ));
-    }, []);
+      setHostBookings(
+        bookings.filter((booking) =>
+          filtered.some((property) => property.id === booking.propertyId)
+        )
+      );
+    };
+
+    loadProperties();
+
+    window.addEventListener('propertiesUpdated', loadProperties);
+    return () => {
+      window.removeEventListener('propertiesUpdated', loadProperties);
+    };
+  }, []);
 
     const handleBookingAction = () => {
       if (!bookingAction) return;

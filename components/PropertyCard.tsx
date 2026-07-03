@@ -85,6 +85,8 @@ export function PropertyCard({
     window.dispatchEvent(new Event('favoritesUpdated'));
   };
 
+  const isGuestFavourite =
+    property.rating >= 4.8 || property.reviewCount >= 100;
   const isCompact = variant === 'compact';
 
   return (
@@ -112,10 +114,12 @@ export function PropertyCard({
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
-          {/* Badge */}
-          <div className="absolute left-3 top-3 rounded-full border border-border bg-background px-3 py-1 text-[13px] font-medium text-foreground shadow-md">
-            Guest favourite
-          </div>
+          {/* Guest Favourite Badge */}
+          {isGuestFavourite && (
+            <div className="absolute left-3 top-3 rounded-full border border-border bg-background px-3 py-1 text-[13px] font-medium text-foreground shadow-md">
+              Guest favourite
+            </div>
+          )}
           
 
           {/* Favorite Button */}

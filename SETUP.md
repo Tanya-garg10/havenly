@@ -33,5 +33,23 @@ pnpm start    # start production build locally
 
 ## FAQ
 
-- **Is a database required?** Currently, the project uses high-fidelity dummy data for all features. Real-time database integration is on the roadmap.
+- **Is a database required?** By default, Havenly runs in offline demo mode using browser `localStorage` to save hosts' listings. However, the app includes a pluggable storage adapter pattern supporting a **shared backend** (e.g., Supabase or a custom REST API) to persist listings server-side so they are visible to all users.
 - **Why pnpm?** pnpm is faster and more disk-efficient than npm. If you don't have it, install it via `npm install -g pnpm`.
+
+## Shared Backend Setup
+
+To enable server-side database persistence for properties, configure **one** of the following sets of environment variables in a `.env.local` file at the root of the project:
+
+### Option A: Supabase
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### Option B: Custom REST API
+```env
+NEXT_PUBLIC_BACKEND_URL=https://your-api-endpoint.com
+```
+
+*Note: When environment variables are configured, the app uses a Stale-While-Revalidate (SWR) approach. It instantly displays listings from local cache, retrieves updates from the backend in the background, and dynamically updates the UI upon sync completion.*
+

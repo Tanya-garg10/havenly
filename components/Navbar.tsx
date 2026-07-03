@@ -11,6 +11,34 @@ import { Input } from '@/components/ui/input';
 import { ExpandedSearchBar } from './expanded-search-bar';
 
 export function Navbar() {
+  return (
+    <Suspense fallback={
+      <nav className="sticky top-0 z-40 border-b border-border bg-background pb-6 pt-5">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center gap-2 text-primary">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M16 1.333c-8.095 0-14.667 6.572-14.667 14.667 0 8.096 6.572 14.667 14.667 14.667s14.667-6.571 14.667-14.667c0-8.095-6.572-14.667-14.667-14.667zm0 2.667c6.636 0 12 5.364 12 12s-5.364 12-12 12-12-5.364-12-12 5.364-12 12-12zM12 9v14h2.667v-6.667h2.666v6.667h2.667V9h-2.667v4.667h-2.666V9H12z"/>
+              </svg>
+              <span className="hidden text-xl font-bold tracking-tight sm:inline">
+                havenly
+              </span>
+            </div>
+            {/* Center Tabs placeholder */}
+            <div className="h-8 w-48 bg-muted animate-pulse rounded" />
+            {/* Right menu placeholder */}
+            <div className="h-8 w-24 bg-muted animate-pulse rounded-full" />
+          </div>
+        </div>
+      </nav>
+    }>
+      <NavbarContent />
+    </Suspense>
+  );
+}
+
+function NavbarContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
