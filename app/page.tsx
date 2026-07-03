@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { PropertyCard } from '@/components/PropertyCard';
-import { Property } from '@/lib/dummy-data';
+import { CategoryFilter } from '@/components/CategoryFilter';
+import { Property, bookings } from '@/lib/dummy-data';
 import { getStoredProperties } from '@/lib/properties';
 import { Footer } from "@/components/Footer";
+import { Button } from '@/components/ui/button';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 interface PropertySectionProps {
@@ -39,13 +42,13 @@ function PropertySection({ title, items, locationName }: PropertySectionProps) {
         <div className="hidden md:flex items-center gap-2">
           <button
             onClick={() => scroll('left')} aria-label="Scroll left"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm hover:shadow-md hover:scale-[1.04] transition"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm hover:shadow-md hover:scale-[1.04] transition animate-in fade-in"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
           </button>
           <button
             onClick={() => scroll('right')} aria-label="Scroll right"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm hover:shadow-md hover:scale-[1.04] transition"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm hover:shadow-md hover:scale-[1.04] transition animate-in fade-in"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
           </button>
@@ -90,7 +93,27 @@ function PropertySection({ title, items, locationName }: PropertySectionProps) {
   );
 }
 
-export default function Home() {
+export default function HomePage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-background">
+        <nav className="sticky top-0 z-40 border-b border-border bg-background pb-6 pt-5">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between" />
+        </nav>
+        <div className="mx-auto max-w-7xl px-4 py-8 animate-pulse">
+          <div className="h-10 bg-muted w-1/4 mb-6 rounded" />
+          <div className="h-64 bg-muted rounded-xl" />
+        </div>
+      </main>
+    }>
+      <Home />
+    </Suspense>
+  );
+}
+
+function Home() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [propertyList, setPropertyList] = useState<Property[]>(getStoredProperties());
 
@@ -98,33 +121,137 @@ export default function Home() {
     setPropertyList(getStoredProperties());
   }, []);
 
-  const filteredProperties = selectedCategory
-    ? propertyList.filter((p) => p.category === selectedCategory)
-    : propertyList;
+  const city = searchParams.get('city') || '';
+  const checkInStr = searchParams.get('checkIn') || '';
+  const checkOutStr = searchParams.get('checkOut') || '';
+  const guests = parseInt(searchParams.get('guests') || '0') || 0;
+
+  // Filter properties
+  const filtered = propertyList.filter((property) => {
+    // 1. Category Filter
+    if (selectedCategory && property.category !== selectedCategory) {
+      return false;
+    }
+
+    // 2. City Filter (Case-insensitive substring search)
+    if (city && !property.location.city.toLowerCase().includes(city.toLowerCase())) {
+      return false;
+    }
+
+    // 3. Guests Filter (Capacity guests >= required guests)
+    if (guests > 0 && property.capacity.guests < guests) {
+      return false;
+    }
+
+    // 4. Dates Filter (Check-in/Check-out availability check)
+    if (checkInStr && checkOutStr) {
+      const reqIn = new Date(checkInStr);
+      const reqOut = new Date(checkOutStr);
+
+      if (reqIn instanceof Date && !isNaN(reqIn.getTime()) && reqOut instanceof Date && !isNaN(reqOut.getTime())) {
+        // Let's check overlap with existing bookings of this property
+        const propertyBookings = bookings.filter(
+          (b) => b.propertyId === property.id && b.status !== 'cancelled'
+        );
+        for (const booking of propertyBookings) {
+          const bIn = new Date(booking.checkIn);
+          const bOut = new Date(booking.checkOut);
+          // Overlap condition: reqIn < bOut && reqOut > bIn
+          if (reqIn < bOut && reqOut > bIn) {
+            return false; // Not available
+          }
+        }
+      }
+    }
+
+    return true;
+  });
+
+  const isFilterActive = Boolean(
+    selectedCategory ||
+    city ||
+    checkInStr ||
+    checkOutStr ||
+    guests > 0
+  );
+
+  const handleClearFilters = () => {
+    setSelectedCategory(undefined);
+    router.push('/');
+  };
 
   return (
     <main className="min-h-screen bg-background">
       {/* Navbar */}
       <Navbar />
 
+      {/* Category Filter */}
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
+
       {/* Properties Sections */}
-      <section className="py-6 md:py-8">
+      <section className="py-6 md:py-8 animate-in fade-in duration-300">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PropertySection
-            title="Popular homes in Varanasi"
-            items={propertyList.slice(0, 6)}
-            locationName="Varanasi"
-          />
-          <PropertySection
-            title="Available in Kolkata this weekend"
-            items={propertyList.slice(2, 8)}
-            locationName="Kolkata"
-          />
-          <PropertySection
-            title="Stay in Gautam Buddha Nagar"
-            items={propertyList.slice(4, 9)}
-            locationName="Gautam Buddha Nagar"
-          />
+          {isFilterActive ? (
+            <div className="mb-12">
+              <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground tracking-tight">
+                    {city ? `Homes in ${city}` : 'Available Homes'}
+                  </h2>
+                  <p className="text-muted-foreground mt-1 text-sm">
+                    {filtered.length} property{filtered.length !== 1 ? 'ies' : ''} found matching your search
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={handleClearFilters}
+                  className="rounded-full text-sm font-semibold hover:bg-muted"
+                >
+                  Clear Filters
+                </Button>
+              </div>
+
+              {filtered.length > 0 ? (
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {filtered.map((property, index) => (
+                    <PropertyCard
+                      key={property.id}
+                      property={property}
+                      priority={index < 8}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 bg-muted/20 rounded-2xl border border-border">
+                  <h3 className="text-lg font-semibold text-foreground mb-1 animate-pulse">No matching homes</h3>
+                  <p className="text-muted-foreground max-w-md mx-auto text-sm px-4">
+                    We couldn't find any homes that match all your criteria. Try adjusting your destination, dates, or guests.
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <PropertySection
+                title="Popular homes in Varanasi"
+                items={propertyList.slice(0, 6)}
+                locationName="Varanasi"
+              />
+              <PropertySection
+                title="Available in Kolkata this weekend"
+                items={propertyList.slice(2, 8)}
+                locationName="Kolkata"
+              />
+              <PropertySection
+                title="Stay in Gautam Buddha Nagar"
+                items={propertyList.slice(4, 9)}
+                locationName="Gautam Buddha Nagar"
+              />
+            </>
+          )}
         </div>
       </section>
 
