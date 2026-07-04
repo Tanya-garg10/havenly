@@ -7,6 +7,7 @@ import { BookingCard } from '@/components/BookingCard';
 import { bookings, properties, currentUser, User } from '@/lib/dummy-data';
 import { Card } from '@/components/ui/card';
 import { EditProfileModal } from '@/components/EditProfileModal';
+import { Footer } from '@/components/Footer';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User>(currentUser);
@@ -131,14 +132,7 @@ export default function DashboardPage() {
         <DashboardTabs tabs={getTabs()} defaultTab="upcoming" />
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-muted py-12 mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; 2026 Havenly, Inc. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

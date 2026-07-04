@@ -1,6 +1,7 @@
 'use client';
 
 import { PropertyWizard } from '@/components/PropertyWizard';
+import { Footer } from '@/components/Footer';
 import { useRouter } from 'next/navigation';
 import { saveStoredProperty } from '@/lib/properties';
 import { Property } from '@/lib/dummy-data';
@@ -22,10 +23,15 @@ export default function AddPropertyPage() {
   };
 
   return (
-    <PropertyWizard
-      mode="create"
-      onSave={handleSave}
-      onCancel={() => router.push('/host')}
-    />
+    <div className="min-h-screen bg-background">
+      <div className="flex-1">
+        <PropertyWizard
+          mode="create"
+          onSave={handleSave}
+          onCancel={() => router.push('/host')}
+        />
+      </div>
+      <Footer />
+    </div>
   );
 }

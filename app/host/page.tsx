@@ -10,6 +10,7 @@ import { Property, bookings, Booking } from '@/lib/dummy-data';
 import { Edit, Trash2, Plus, Eye, Calendar, Users } from 'lucide-react';
 import { getStoredProperties, deleteStoredProperty } from '@/lib/properties';
 import { useToast } from '@/hooks/use-toast';
+import { Footer } from '@/components/Footer';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -320,14 +321,7 @@ export default function HostDashboardPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-muted py-12 mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-muted-foreground">
-            © 2026 Havenly, Inc. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       <AlertDialog open={deletingPropertyId !== null} onOpenChange={(open) => !open && setDeletingPropertyId(null)}>
         <AlertDialogContent>

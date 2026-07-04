@@ -12,7 +12,7 @@ export interface StorageAdapter {
   getProperties(): Property[];
   saveProperty(property: Property): void;
   deleteProperty(id: string): void;
-  syncBackground?(onSync: (properties: Property[]) => void): void;
+  syncBackground?(onSync: (properties: Property[]) => void): Promise<void>;
 }
 
 class LocalStorageAdapter implements StorageAdapter {
