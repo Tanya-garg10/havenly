@@ -232,7 +232,7 @@ export default function MapComponent({
         const isSelected = property.id === selectedPropertyId;
 
         // Custom HTML Marker matching Airbnb aesthetic
-        const priceLabel = `₹${Math.round(property.pricePerNight * 100).toLocaleString()}`;
+        const priceLabel = `₹${Math.round(property.pricePerNight).toLocaleString()}`;
         const activeClass = isSelected
           ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-lg z-[1000]'
           : isHovered
@@ -261,7 +261,7 @@ export default function MapComponent({
                 <h4 class="font-bold text-xs truncate leading-tight text-foreground">${property.title}</h4>
                 <p class="text-[10px] text-muted-foreground truncate">${property.location.city}, ${property.location.state}</p>
                 <div class="mt-1 flex items-center justify-between">
-                  <span class="font-bold text-[11px] text-foreground">₹${Math.round(property.pricePerNight * 100).toLocaleString()} <span class="font-normal text-[9px] text-muted-foreground">/ night</span></span>
+                  <span class="font-bold text-[11px] text-foreground">₹${Math.round(property.pricePerNight).toLocaleString()} <span class="font-normal text-[9px] text-muted-foreground">/ night</span></span>
                   <span class="flex items-center gap-0.5 text-[10px] font-semibold text-foreground"><span class="text-primary font-bold text-[11px]">★</span> ${property.rating.toFixed(2)}</span>
                 </div>
               </div>
