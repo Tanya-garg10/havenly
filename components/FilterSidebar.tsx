@@ -8,11 +8,24 @@ import { Input } from '@/components/ui/input';
 interface FilterSidebarProps {
   onClose?: () => void;
   isOpen?: boolean;
+  priceFilter: { min: number; max: number };
+  onPriceFilterChange: (price: { min: number; max: number }) => void;
+  ratingFilter: number;
+  onRatingFilterChange: (rating: number) => void;
+  typeFilter: string[];
+  onTypeFilterChange: (types: string[]) => void;
 }
 
-export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 500 });
-  const [minRating, setMinRating] = useState(0);
+export function FilterSidebar({
+  onClose,
+  isOpen = true,
+  priceFilter,
+  onPriceFilterChange,
+  ratingFilter,
+  onRatingFilterChange,
+  typeFilter,
+  onTypeFilterChange,
+}: FilterSidebarProps) {
   const [expandedFilters, setExpandedFilters] = useState({
     price: true,
     rating: true,
@@ -27,16 +40,30 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
   };
 
   const propertyTypes = [
-    { id: 'entire', label: 'Entire Place' },
-    { id: 'room', label: 'Room' },
-    { id: 'shared', label: 'Shared Room' },
+    { id: 'Entire Place', label: 'Entire Place' },
+    { id: 'Room', label: 'Room' },
+    { id: 'Shared Room', label: 'Shared Room' },
   ];
 
   const ratings = [
-    { value: 4.5, label: '4.5+ (Excellent)' },
-    { value: 4.0, label: '4.0+ (Very Good)' },
-    { value: 3.5, label: '3.5+ (Good)' },
+    { value: 4.8, label: '4.8+ (Excellent)' },
+    { value: 4.5, label: '4.5+ (Very Good)' },
+    { value: 4.0, label: '4.0+ (Good)' },
   ];
+
+  const handleTypeCheckboxChange = (typeLabel: string, checked: boolean) => {
+    if (checked) {
+      onTypeFilterChange([...typeFilter, typeLabel]);
+    } else {
+      onTypeFilterChange(typeFilter.filter((t) => t !== typeLabel));
+    }
+  };
+
+  const handleClearAll = () => {
+    onPriceFilterChange({ min: 0, max: 1000 });
+    onRatingFilterChange(0);
+    onTypeFilterChange([]);
+  };
 
   return (
     <>
@@ -50,12 +77,12 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-80 border-r border-border bg-white px-6 py-4 transform transition-transform md:relative md:inset-auto md:w-64 md:transform-none ${
+        className={`fixed inset-y-0 left-0 z-40 w-80 border-r border-border bg-background px-6 py-4 transform transition-transform md:relative md:inset-auto md:w-64 md:transform-none ${
           isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between md:mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-foreground">Filters</h2>
           <button
             onClick={onClose}
@@ -85,15 +112,18 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
             <div className="mt-4 space-y-4">
               <div className="space-y-2">
                 <label className="text-xs font-medium text-muted-foreground">
-                  Minimum Price
+                  Minimum Price ($)
                 </label>
                 <div className="flex items-center gap-2">
                   <span className="text-sm">$</span>
                   <Input
                     type="number"
-                    value={priceRange.min}
+                    value={priceFilter.min}
                     onChange={(e) =>
-                      setPriceRange({ ...priceRange, min: parseInt(e.target.value) })
+                      onPriceFilterChange({
+                        ...priceFilter,
+                        min: Math.max(0, parseInt(e.target.value) || 0),
+                      })
                     }
                     className="h-9"
                   />
@@ -102,15 +132,18 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
 
               <div className="space-y-2">
                 <label className="text-xs font-medium text-muted-foreground">
-                  Maximum Price
+                  Maximum Price ($)
                 </label>
                 <div className="flex items-center gap-2">
                   <span className="text-sm">$</span>
                   <Input
                     type="number"
-                    value={priceRange.max}
+                    value={priceFilter.max}
                     onChange={(e) =>
-                      setPriceRange({ ...priceRange, max: parseInt(e.target.value) })
+                      onPriceFilterChange({
+                        ...priceFilter,
+                        max: Math.max(0, parseInt(e.target.value) || 0),
+                      })
                     }
                     className="h-9"
                   />
@@ -121,11 +154,14 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
                 type="range"
                 min="0"
                 max="1000"
-                value={priceRange.max}
+                value={priceFilter.max}
                 onChange={(e) =>
-                  setPriceRange({ ...priceRange, max: parseInt(e.target.value) })
+                  onPriceFilterChange({
+                    ...priceFilter,
+                    max: parseInt(e.target.value) || 0,
+                  })
                 }
-                className="w-full accent-primary"
+                className="w-full accent-primary cursor-pointer"
               />
             </div>
           )}
@@ -148,14 +184,25 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
 
           {expandedFilters.rating && (
             <div className="mt-4 space-y-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="radio"
+                  name="rating"
+                  value={0}
+                  checked={ratingFilter === 0}
+                  onChange={() => onRatingFilterChange(0)}
+                  className="h-4 w-4 cursor-pointer accent-primary"
+                />
+                <span className="text-sm text-foreground">Any rating</span>
+              </label>
               {ratings.map((rating) => (
                 <label key={rating.value} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="radio"
                     name="rating"
                     value={rating.value}
-                    checked={minRating === rating.value}
-                    onChange={() => setMinRating(rating.value)}
+                    checked={ratingFilter === rating.value}
+                    onChange={() => onRatingFilterChange(rating.value)}
                     className="h-4 w-4 cursor-pointer accent-primary"
                   />
                   <span className="text-sm text-foreground">{rating.label}</span>
@@ -166,7 +213,7 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
         </div>
 
         {/* Property Type Filter */}
-        <div className="mb-6">
+        <div className="mb-6 pb-6 border-b border-border">
           <button
             onClick={() => toggleFilter('type')}
             className="flex w-full items-center justify-between font-semibold text-foreground hover:text-primary transition"
@@ -186,6 +233,8 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
                 <label key={type.id} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
+                    checked={typeFilter.includes(type.id)}
+                    onChange={(e) => handleTypeCheckboxChange(type.id, e.target.checked)}
                     className="h-4 w-4 cursor-pointer accent-primary rounded"
                   />
                   <span className="text-sm text-foreground">{type.label}</span>
@@ -198,13 +247,10 @@ export function FilterSidebar({ onClose, isOpen = true }: FilterSidebarProps) {
         {/* Clear Filters Button */}
         <Button
           variant="outline"
-          className="w-full"
-          onClick={() => {
-            setPriceRange({ min: 0, max: 500 });
-            setMinRating(0);
-          }}
+          className="w-full rounded-full cursor-pointer hover:bg-muted font-medium"
+          onClick={handleClearAll}
         >
-          Clear All
+          Clear All Filters
         </Button>
       </aside>
     </>

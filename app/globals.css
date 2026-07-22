@@ -129,3 +129,50 @@ button{
     @apply bg-background text-foreground;
   }
 }
+
+/* ==========================================================================
+   Leaflet Custom Premium Styling Overrides
+   ========================================================================== */
+
+/* Remove default leaflet backgrounds for price icons & clusters to use Tailwind styles */
+.price-marker-wrapper, 
+.cluster-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Completely strip leaflet popup styling so we can use our premium React markup */
+.custom-map-popup .leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.custom-map-popup .leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  line-height: inherit !important;
+}
+
+.custom-map-popup .leaflet-popup-tip-container {
+  display: none !important; /* Hide default triangle tip for clean, floating card aesthetic */
+}
+
+/* Ensure Leaflet container respects parent fonts */
+.leaflet-container {
+  font-family: inherit !important;
+  background-color: var(--muted) !important;
+}
+
+/* Smooth transitons for active map price tags */
+.price-marker-wrapper div {
+  transform-origin: center bottom;
+  will-change: transform, background-color;
+  backface-visibility: hidden;
+}
+

@@ -4,8 +4,10 @@ import { useState, useRef, useEffect, Suspense } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { PropertyCard } from '@/components/PropertyCard';
 import { CategoryFilter } from '@/components/CategoryFilter';
+import { AISearchHero } from '@/components/AISearchHero';
 import { Property, bookings } from '@/lib/dummy-data';
 import { getStoredProperties } from '@/lib/properties';
+import { ParsedFilters } from '@/lib/nlp-parser';
 import { Footer } from "@/components/Footer";
 import { Button } from '@/components/ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -116,6 +118,7 @@ function Home() {
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [propertyList, setPropertyList] = useState<Property[]>(getStoredProperties());
+  const [nlpFilters, setNlpFilters] = useState<ParsedFilters | null>(null);
 
   useEffect(() => {
     setPropertyList(getStoredProperties());
@@ -173,6 +176,39 @@ function Home() {
       }
     }
 
+    // 5. NLP-Parsed Filters
+    if (nlpFilters) {
+      // Location
+      if (nlpFilters.location && !property.location.city.toLowerCase().includes(nlpFilters.location.toLowerCase())) {
+        return false;
+      }
+      // Max Price
+      if (nlpFilters.maxPrice !== undefined && property.pricePerNight > nlpFilters.maxPrice) {
+        return false;
+      }
+      // Min Rating
+      if (nlpFilters.minRating !== undefined && property.rating < nlpFilters.minRating) {
+        return false;
+      }
+      // Property Type
+      if (nlpFilters.types && nlpFilters.types.length > 0 && !nlpFilters.types.includes(property.type)) {
+        return false;
+      }
+      // Amenities
+      if (nlpFilters.amenities && nlpFilters.amenities.length > 0) {
+        const hasAll = nlpFilters.amenities.every((a) => property.amenities.includes(a));
+        if (!hasAll) return false;
+      }
+      // Guests
+      if (nlpFilters.guests && nlpFilters.guests > 0 && property.capacity.guests < nlpFilters.guests) {
+        return false;
+      }
+      // Bedrooms
+      if (nlpFilters.bedrooms && nlpFilters.bedrooms > 0 && property.capacity.bedrooms < nlpFilters.bedrooms) {
+        return false;
+      }
+    }
+
     return true;
   });
 
@@ -181,11 +217,13 @@ function Home() {
     city ||
     checkInStr ||
     checkOutStr ||
-    guests > 0
+    guests > 0 ||
+    nlpFilters
   );
 
   const handleClearFilters = () => {
     setSelectedCategory(undefined);
+    setNlpFilters(null);
     router.push('/');
   };
 
@@ -200,8 +238,18 @@ function Home() {
         onCategoryChange={setSelectedCategory}
       />
 
-      {/* Properties Sections */}
+      {/* AI Search Hero */}
       <section className="py-6 md:py-8 animate-in fade-in duration-300">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AISearchHero
+            onFiltersChange={(filters) => setNlpFilters(filters)}
+            onClear={() => setNlpFilters(null)}
+          />
+        </div>
+      </section>
+
+      {/* Properties Sections */}
+      <section className="py-0 md:py-2 animate-in fade-in duration-300">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           {isFilterActive ? (
             <div className="mb-12">

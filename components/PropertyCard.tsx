@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Star } from 'lucide-react';
+import { Heart, Star, MapPin } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 
 import type { Property } from '@/lib/dummy-data';
@@ -11,6 +11,7 @@ interface PropertyCardProps {
   property: Property;
   variant?: 'default' | 'compact';
   priority?: boolean;
+  onViewMap?: (property: Property) => void;
 }
 
 // Favorites are stored as an array of property IDs only (not full objects).
@@ -42,6 +43,7 @@ export function PropertyCard({
   property,
   variant = 'default',
   priority = false,
+  onViewMap,
 }: PropertyCardProps) {
   const [isSaved, setIsSaved] = useState(false);
 
@@ -91,8 +93,12 @@ export function PropertyCard({
 
   return (
     <Link
-      href={`/property/${property.id}`}
-      className="group block cursor-pointer border-0"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          if (onViewMap) onViewMap(property);
+        }}
+        className="group block cursor-pointer border-0"
     >
       <div className="flex flex-col gap-3">
         {/* Image */}
@@ -140,6 +146,20 @@ export function PropertyCard({
               }`}
             />
           </button>
+        {/* View on Map Button */}
+        {onViewMap && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onViewMap(property);
+            }}
+            aria-label="View on map"
+            className="absolute left-3 top-3 flex items-center justify-center p-2 transition-transform hover:scale-105"
+          >
+            <MapPin size={24} className="fill-black/30 text-white stroke-[1.5]" />
+          </button>
+        )}
         </div>
 
         {/* Content */}
